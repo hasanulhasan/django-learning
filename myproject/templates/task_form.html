@@ -6,6 +6,11 @@
     <title>Document</title>
   </head>
   <body>
+    <div>
+      {% if message %}
+        {{message}}
+      {% endif %}
+    </div>
     <form action="" method="POST">
         {% csrf_token %}
       {% comment %} <label for="title">Title</label>

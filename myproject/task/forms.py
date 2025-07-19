@@ -1,5 +1,5 @@
 from django import forms
-
+from task.models import Task, Employee
 #Django Form
 class TaskForm(forms.Form):
     title = forms.CharField(max_length=250, label='Task Title')
@@ -14,3 +14,13 @@ class TaskForm(forms.Form):
         super().__init__(*args, **kwargs)  #arg is sending here by unpack method
         # print(self.fields)
         self.fields['assigned_to'].choices = [(emp.id, emp.name) for emp in employees]
+
+#Django Model Form
+class TaskModelForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ['title', 'description', 'due_date', 'assigned_to']
+        widgets = {
+            'due_date': forms.SelectDateWidget(),
+            'assigned_to': forms.CheckboxSelectMultiple(),
+        }

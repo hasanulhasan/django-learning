@@ -4,6 +4,9 @@ class Employee(models.Model):
     name = models.CharField(max_length=200)
     email = models.EmailField(unique=True)
 
+    def __str__(self):
+        return self.name
+
 # Create your models here.
 class Task(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE, default = 1)
