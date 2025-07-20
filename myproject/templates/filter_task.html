@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <h1>Filtered Tasks</h1>
+      <h4>Pending Tasks</h4>
+      <ul>
+        {% for task in pending_tasks %}
+        <li>{{ task.name }} - {{ task.description }} -- {{ task.status }} </li>
+        {% empty %}
+        <li>No tasks match the filter criteria.</li>
+        {% endfor %}
+      </ul>
+        <h4>Tasks Before Today</h4>
+        <ul>
+            {% for task in tasks_before_today %} 
+            <li>{{ task.name }} - {{ task.description }} -- {{ task.due_date }}</li>
+            {% empty %}
+            <li>No tasks are due before today.</li>
+            {% endfor %}
+        </ul>
+        <h4>High Priority Task</h4>
+        <ul>
+            {% for task in high_priority_tasks %}
+            <li>{{ task.task }} - {{ task.assigned_to }} -- {{ task.priority }}</li>
+            {% empty %}
+            <li>No high priority tasks found.</li>
+            {% endfor %}
+        </ul>
+        <h4>Not Low Priority Task</h4>
+        <ul>
+            {% for task in not_low_priority_tasks %}
+            <li>{{ task.task }} - {{ task.assigned_to }} -- {{ task.priority }}</li>
+            {% empty %}
+            <li>No tasks with priority other than low found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+  </body>
+</html>

@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from task.forms import TaskForm, TaskModelForm
-from task.models import Employee, Task
+from task.models import *
+from datetime import date
 
 # Create your views here.
 def dashboard(request):
@@ -60,3 +61,20 @@ def view_tasks(request):
     #fetch the first task
     first_task = Task.objects.first()
     return render(request, "show_task.html", {'tasks': tasks, "task_3": task_3, "first_task": first_task})
+
+def tasks_with_filter(request):
+    #showing all pending tasks
+    pending_tasks = Task.objects.filter(status='PENDING')
+    #showing all task before today
+    tasks_before_today = Task.objects.filter(due_date__lt=date.today())
+    tasks_today = Task.objects.filter(due_date=date.today())
+    #tasks whose priority is high
+    high_priority_tasks = TaskDetails.objects.filter(priority='H')
+    #tasks whose priority is not low
+    not_low_priority_tasks = TaskDetails.objects.exclude(priority='L')
+    return render(request, "filter_task.html", {
+        'pending_tasks': pending_tasks, 
+        "tasks_before_today": tasks_before_today,
+        "high_priority_tasks": high_priority_tasks,
+        "not_low_priority_tasks": not_low_priority_tasks
+        })
