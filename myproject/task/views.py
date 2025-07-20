@@ -51,3 +51,12 @@ def create_task(request):
         'form': form
     }
     return render(request, "task_form.html", context)
+
+def view_tasks(request):
+    #retrieve all tasks from the database
+    tasks = Task.objects.all()
+    #retrieve specific tasks based on the user type
+    task_3 = Task.objects.filter(id=3)
+    #fetch the first task
+    first_task = Task.objects.first()
+    return render(request, "show_task.html", {'tasks': tasks, "task_3": task_3, "first_task": first_task})

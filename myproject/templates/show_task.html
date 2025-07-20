@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <h1>Tasks</h1>
+      <ul>
+        {% for task in tasks %}
+          <li>{{ task.name }} - {{ task.description }}</li>
+        {% empty %}
+          <li>No tasks available.</li>
+        {% endfor %}
+      </ul>
+      <div>
+        <h2>Task with ID 3</h2>
+        {% for task in task_3 %}
+          <p>{{ task.name }} - {{ task.description }}</p>
+        {% empty %}
+          <p>No task with ID 3 found.</p>
+        {% endfor %}
+      </div>
+      <div>
+        <h2>First Task</h2>
+        {% if first_task %}
+          <p>{{ first_task.name }} - {{ first_task.description }}</p>
+        {% else %}
+          <p>No tasks available.</p>
+        {% endif %}
+      </div>
+  </body>
+</html>
