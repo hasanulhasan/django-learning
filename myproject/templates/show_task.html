@@ -1,16 +1,17 @@
-<!DOCTYPE html>
+{% load static %}
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}" />
   </head>
   <body>
     <div>
-      <h1>Tasks</h1>
-      <ul>
+      <h1 class="text-center text-2xl mb-2 font-bold">Tasks</h1>
+      <ul class="mx-4">
         {% for task in tasks %}
-          <li>{{ task.name }} - {{ task.description }}</li>
+          <li class="text-lg font-medium">{{ task.name }} - {{ task.description }}</li>
         {% empty %}
           <li>No tasks available.</li>
         {% endfor %}

@@ -72,6 +72,18 @@ def tasks_with_filter(request):
     high_priority_tasks = TaskDetails.objects.filter(priority='H')
     #tasks whose priority is not low
     not_low_priority_tasks = TaskDetails.objects.exclude(priority='L')
+    #contain a common word in title
+    tasks_with_common_word = Task.objects.filter(title__icontains='common')
+    #two or more conditions
+    tasks_with_conditions = Task.objects.filter(status='PENDING', due_date__lt=date.today())
+    #or operator
+    tasks_with_or_condition = Task.objects.filter(status='PENDING') | Task.objects.filter(due_date__lt=date.today())
+    #get the number of tasks by a specific employee
+    employee_id = 1  # Example employee ID 
+    tasks_by_employee = Task.objects.filter(assigned_to__id=employee_id)
+    #get the most recent assigned task
+    most_recent_task = Task.objects.order_by('-created_at').first()
+    
     return render(request, "filter_task.html", {
         'pending_tasks': pending_tasks, 
         "tasks_before_today": tasks_before_today,
