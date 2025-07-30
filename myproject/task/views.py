@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from task.forms import TaskForm, TaskModelForm
 from task.models import *
 from datetime import date
+from django.db.models import Q, Count, Sum, Avg
 
 # Create your views here.
 def dashboard(request):
@@ -12,12 +13,26 @@ def manager_dashboard(request):
     return render(request, "manager-dashboard.html")
 
 def user_dashboard(request):
-    tasks = Task.objects.all()
+    type = request.GET.get('type', 'all')
+    print(type)
+
+    tasks = Task.objects.select_related('details').prefetch_related('assigned_to').all()
 
     total_tasks = tasks.count()
     pending_tasks = tasks.filter(status='PENDING').count()
     completed_tasks = tasks.filter(status='COMPLETED').count()
     in_progress_tasks = tasks.filter(status='IN_PROGRESS').count()
+
+    base_query = Task.objects.select_related('details').prefetch_related('assigned_to')
+
+    if type == 'pending':
+        tasks = base_query.filter(status='PENDING')
+    elif type == 'completed':
+        tasks = base_query.filter(status='COMPLETED')
+    elif type == 'in_progress':
+        tasks = base_query.filter(status='IN_PROGRESS')
+    else:
+        tasks = base_query.all()
 
     context = {
         'tasks': tasks,
