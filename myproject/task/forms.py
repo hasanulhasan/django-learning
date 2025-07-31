@@ -1,5 +1,5 @@
 from django import forms
-from task.models import Task, Employee
+from task.models import Task, Employee, TaskDetails
 #Django Form
 class TaskForm(forms.Form):
     title = forms.CharField(max_length=250, label='Task Title')
@@ -24,3 +24,8 @@ class TaskModelForm(forms.ModelForm):
             'due_date': forms.SelectDateWidget(),
             'assigned_to': forms.CheckboxSelectMultiple(),
         }
+
+class TaskDetailsModelForm(forms.ModelForm):
+    class Meta:
+        model = TaskDetails
+        fields = ['priority', 'notes']

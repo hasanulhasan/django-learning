@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from task.forms import TaskForm, TaskModelForm
+from task.forms import TaskForm, TaskModelForm, TaskDetailsModelForm
 from task.models import *
 from datetime import date
 from django.db.models import Q, Count, Sum, Avg
+from django.contrib import messages
 
 # Create your views here.
 def dashboard(request):
@@ -53,13 +54,22 @@ def create_task(request):
     employees = Employee.objects.all()
     form = TaskModelForm()  #for get method
 
+    # task_form = TaskModelForm()
+    task_details_form = TaskDetailsModelForm()
+
     if request.method == 'POST':
         form = TaskModelForm(request.POST)
-        if form.is_valid():
+        task_details_form = TaskDetailsModelForm(request.POST)
+
+        if form.is_valid() and task_details_form.is_valid():
             """For Model Form"""
-            form.save()  # This will save the task using the ModelForm
-            return render(request, "task_form.html", {'form': form, "message": "Task created successfully"})
-        
+            task = form.save()  # This will save the task using the ModelForm
+            task_details = task_details_form.save(commit=False)  # Create TaskDetails instance without saving
+            task_details.task = task  # Associate the TaskDetails with the Task
+            task_details.save()  # Now save the TaskDetails instance
+            # return render(request, "task_form.html", {'form': form, "message": "Task created successfully"})
+            messages.success(request, "Task created successfully")
+            return redirect('create-task')  # Redirect to user dashboard after successful creation
             """For Django Form"""
             # print(form.cleaned_data)
             # data = form.cleaned_data
@@ -77,8 +87,12 @@ def create_task(request):
             #     task.assigned_to.add(employee)
             # task.save()
             # return HttpResponse("<h1 style='color: green'>Task created successfully</h1>")
+    # context = {
+    #     'form': form
+    # }
     context = {
-        'form': form
+        'task_form': form,
+        'task_details_form': task_details_form
     }
     return render(request, "task_form.html", context)
 
