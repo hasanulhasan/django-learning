@@ -96,6 +96,33 @@ def create_task(request):
     }
     return render(request, "task_form.html", context)
 
+def update_task(request, id):
+    task = Task.objects.get(id=id)
+    form = TaskModelForm(instance=task)
+
+    if task.details:
+        task_details_form = TaskDetailsModelForm(instance=task.details) 
+
+    if request.method == 'POST':
+        form = TaskModelForm(request.POST, instance=task)
+        task_details_form = TaskDetailsModelForm(request.POST, instance=task.details)
+
+        if form.is_valid() and task_details_form.is_valid():
+            """For Model Form"""
+            task = form.save()  # This will save the task using the ModelForm
+            task_details = task_details_form.save(commit=False)  # Create TaskDetails instance without saving   
+            task_details.task = task  # Associate the TaskDetails with the Task
+            task_details.save()  # Now save the TaskDetails instance
+
+            messages.success(request, "Task updated successfully")
+            return redirect('update-task', id)  
+    context = {
+        'task_form': form,
+        'task_details_form': task_details_form
+    }
+    return render(request, "task_form.html", context)
+
+
 def view_tasks(request):
     #retrieve all tasks from the database
     tasks = Task.objects.all()
