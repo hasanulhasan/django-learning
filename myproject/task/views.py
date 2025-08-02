@@ -122,6 +122,15 @@ def update_task(request, id):
     }
     return render(request, "task_form.html", context)
 
+def delete_task(request, id):
+    task = Task.objects.get(id=id)
+    if request.method == 'POST':
+        task.delete()
+        messages.success(request, "Task deleted successfully")
+        return redirect('user-dashboard')  # Redirect to user dashboard after deletion
+    else:
+        messages.error(request, "Something went wrong, please try again.")
+        return redirect('user-dashboard') 
 
 def view_tasks(request):
     #retrieve all tasks from the database
