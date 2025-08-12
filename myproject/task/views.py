@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from task.forms import TaskForm, TaskModelForm, TaskDetailsModelForm
 from task.models import *
-from datetime import date
+from datetime import date, timedelta
 from django.db.models import Q, Count, Sum, Avg
 from django.contrib import messages
 
@@ -162,6 +162,15 @@ def tasks_with_filter(request):
     tasks_by_employee = Task.objects.filter(assigned_to__id=employee_id)
     #get the most recent assigned task
     most_recent_task = Task.objects.order_by('-created_at').first()
+    #Show tasks that have been overdue for more than a week
+    overdue_tasks = Task.objects.filter(due_date__lt=date.today() - timedelta(days=7))
+    #Show all projects that have no tasks assigned
+    projects_with_no_tasks = Project.objects.annotate(task_count=Count('task')).filter(task_count=0)
+    #Show all employees working on a specific project
+    project_id = 1  # Example project ID
+    employees_on_project = Employee.objects.filter(task__project__id=1).distinct()
+    #Show the tasks which are assigned to a specific employee
+    specific_employee_tasks = Task.objects.filter(assigned_to__id=1)
     
     return render(request, "filter_task.html", {
         'pending_tasks': pending_tasks, 

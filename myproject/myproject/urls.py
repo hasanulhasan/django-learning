@@ -8,5 +8,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("contact/", contact),
     path("home/", home),
-    path("task/", include("task.urls"))
+    path("task/", include("task.urls")),
+    path("users/", include("users.urls"))
 ] + debug_toolbar_urls()
