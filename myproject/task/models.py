@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models.signals import post_save, pre_save, m2m_changed
+from django.db.models.signals import post_save, pre_save, m2m_changed, post_delete
 from django.dispatch import receiver
 from django.core.mail import send_mail
 
@@ -42,7 +42,7 @@ class TaskDetails(models.Model):
         )
         task = models.OneToOneField(
              Task, 
-             on_delete=models.CASCADE,
+             on_delete=models.DO_NOTHING,
              related_name='details',
         )
         # assigned_to = models.CharField(max_length=100)
@@ -74,3 +74,9 @@ def notify_emp_on_task_creation(sender, instance, action, **kwargs):
             assigned_emails,
             fail_silently=False
         )
+
+@receiver(post_delete, sender=Task)
+def delete_task_details(sender, instance, **kwargs):
+    if instance.details:
+        instance.details.delete()
+        print(f"Task details for '{instance.title}' deleted.")
