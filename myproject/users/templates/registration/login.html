@@ -7,17 +7,23 @@
 </head>
 <body>
     <h1> Welcome to Login page</h1>
-
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
     <form action="" method="POST">
         {% csrf_token %}
-        <div>
+        {{form.as_p}}
+        {# Uncomment the following lines if you want to use custom input fields #}
+        {% comment %} <div>
             <label for="username">Username:</label>
             <input type="text" id="username" placeholder="Enter your username" name="username" required>
         </div>
         <div>
             <label for="password">Password:</label>
             <input type="password" id="password" placeholder="Enter your password" name="password" required>
-        </div>
+        </div> {% endcomment %}
         <button type='submit'>Login</button>
     </form>
 </body>

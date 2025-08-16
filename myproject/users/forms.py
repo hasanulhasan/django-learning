@@ -2,6 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 import re
+from django.contrib.auth.forms import AuthenticationForm
 
 class RegistrationForm(UserCreationForm):
     class Meta:
@@ -53,3 +54,7 @@ class CustomRegistrationForm(forms.ModelForm):
             raise forms.ValidationError("Passwords do not match.")
         
         return cleaned_data
+    
+class CustomLoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
