@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
-from users.forms import RegistrationForm, CustomRegistrationForm
+from users.forms import RegistrationForm, CustomRegistrationForm, AssignedRoleForm
 from django.contrib.auth import authenticate, login , logout
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
@@ -68,3 +68,23 @@ def activate_user(request, user_id, token):
             return HttpResponse("Activation link is invalid or has expired.")
     except User.DoesNotExist:
         return HttpResponse("User does not exist")
+
+def admin_dashboard(request):
+    users = User.objects.all()
+    return render(request, 'admin/dashboard.html', {'users': users})
+
+def assign_role(request, user_id):
+    user = User.objects.get(id=user_id)
+    form = AssignedRoleForm()
+    if request.method == 'POST':
+        form = AssignedRoleForm(request.POST)
+        if form.is_valid():
+            role = form.cleaned_data['role']
+            user.groups.clear()  # Clear existing roles
+            user.groups.add(role)  # Assign new role
+            user.save()
+            messages.success(request, f"Role '{role.name}' assigned to {user.username}.")
+            return redirect('admin-dashboard')
+    else:
+        form = AssignedRoleForm()
+    return render(request, 'admin/assign_role.html', {'form': form, 'user': user})
