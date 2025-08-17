@@ -64,3 +64,15 @@ class AssignedRoleForm(forms.Form):
         queryset=Group.objects.all(),
         empty_label="Select a role",
     )
+
+class CreateGroupForm(forms.ModelForm):
+    permissions = forms.ModelMultipleChoiceField(
+        queryset=Permission.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label="Assign Permissions"
+    )
+
+    class Meta:
+        model = Group
+        fields = ['name', 'permissions']
