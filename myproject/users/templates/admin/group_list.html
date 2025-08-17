@@ -1,61 +1,55 @@
-{% extends "admin/dashboard.html" %}
-{% block content %}
+{% extends "admin/dashboard.html" %} {% block content %}
 <main class="w-2/3 mx-auto mt-8">
-      <h2 class="text-2xl font-bold mb-4">Groups and Permissions</h2>
-      <div class="overflow-x-auto">
-        <table class="table-auto w-full border-collapse border border-gray-300">
-          <thead>
-            <tr class="bg-gray-100">
-              <th class="border border-gray-300 px-4 py-2">Group Name</th>
-              <th class="border border-gray-300 px-4 py-2">Permissions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Example group data -->
-             {% for group in groups %}
-            <tr class="odd:bg-white even:bg-gray-50">
-                <td class="border border-gray-300 px-4 py-2 font-medium">
-                {{ group.name }}
-                </td>
-                <td class="border border-gray-300 px-4 py-2">
-                <ul class="list-disc list-inside">
-                    {% for permission in group.permissions.all %}
-                    <li>{{ permission.name }}</li>  
-                    {% empty %}
-                    <li class="text-gray-500 italic">No permissions assigned</li>
-                    {% endfor %}
-                    {% comment %} <li>View Articles</li>
-                    {% comment %} <li>Add User</li>
-                    <li>Delete User</li> {% endcomment %}
-                </ul>
-                </td>
-            </tr>
-             {% endfor %}
-            
-            {% comment %} <tr class="odd:bg-white even:bg-gray-50">
-              <td class="border border-gray-300 px-4 py-2 font-medium">
-                Editors
-              </td>
-              <td class="border border-gray-300 px-4 py-2">
-                <ul class="list-disc list-inside">
-                  <li>Edit Articles</li>
-                  <li>Publish Articles</li>
-                </ul>
-              </td>
-            </tr>
-            <tr class="odd:bg-white even:bg-gray-50">
-              <td class="border border-gray-300 px-4 py-2 font-medium">
-                Viewers
-              </td>
-              <td class="border border-gray-300 px-4 py-2">
-                <span class="text-gray-500 italic"
-                  >No permissions assigned</span
-                >
-              </td>
-            </tr> {% endcomment %}
-          </tbody>
-        </table>
-      </div>
-    </main>
+  <h2 class="text-2xl font-bold mb-4">Groups and Permissions</h2>
+  <div class="overflow-x-auto">
+    <table class="table-auto w-full border-collapse border border-gray-300">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="border border-gray-300 px-4 py-2">Group Name</th>
+          <th class="border border-gray-300 px-4 py-2">Permissions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Example group data -->
+        {% for group in groups %}
+        <tr class="odd:bg-white even:bg-gray-50">
+          <td class="border border-gray-300 px-4 py-2 font-medium">
+            {{ group.name }}
+          </td>
+          <td class="border border-gray-300 px-4 py-2">
+            <ul class="list-disc list-inside">
+              {% for permission in group.permissions.all %}
+              <li>{{ permission.name }} -- {{permission.codename}}</li>
+              {% empty %}
+              <li class="text-gray-500 italic">No permissions assigned</li>
+              {% endfor %} {% comment %}
+              <li>View Articles</li>
+              {% comment %}
+              <li>Add User</li>
+              <li>Delete User</li>
+              {% endcomment %}
+            </ul>
+          </td>
+        </tr>
+        {% endfor %} {% comment %}
+        <tr class="odd:bg-white even:bg-gray-50">
+          <td class="border border-gray-300 px-4 py-2 font-medium">Editors</td>
+          <td class="border border-gray-300 px-4 py-2">
+            <ul class="list-disc list-inside">
+              <li>Edit Articles</li>
+              <li>Publish Articles</li>
+            </ul>
+          </td>
+        </tr>
+        <tr class="odd:bg-white even:bg-gray-50">
+          <td class="border border-gray-300 px-4 py-2 font-medium">Viewers</td>
+          <td class="border border-gray-300 px-4 py-2">
+            <span class="text-gray-500 italic">No permissions assigned</span>
+          </td>
+        </tr>
+        {% endcomment %}
+      </tbody>
+    </table>
+  </div>
+</main>
 {% endblock content %}
-

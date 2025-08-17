@@ -15,7 +15,7 @@
           >
           <div class="hidden md:flex space-x-4">
             <a
-              href="admin-dashboard.html"
+              href={% url 'admin-dashboard' %}
               class="text-gray-600 hover:text-gray-800"
               >Dashboard</a
             >
@@ -50,7 +50,8 @@
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >Dashboard</a
                 >
-                <form method="post" action="logout.html">
+                <form method="post" action={% url 'sign_out' %}>
+                  {% csrf_token %}
                   <button
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >

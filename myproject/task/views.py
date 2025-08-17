@@ -5,11 +5,16 @@ from task.models import *
 from datetime import date, timedelta
 from django.db.models import Q, Count, Sum, Avg
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
+
+def is_manager(user):
+    return user.groups.filter(name='Manager').exists()
 
 # Create your views here.
 def dashboard(request):
     return render(request, "dashboard.html")
 
+@user_passes_test(is_manager, login_url='no-permission')
 def manager_dashboard(request):
     return render(request, "manager-dashboard.html")
 
@@ -50,6 +55,8 @@ def home(request):
 def contact(request):
     return HttpResponse("<h1 style='color: red'>This is contact page</h1>")
 
+@login_required
+@permission_required('task.add_task', login_url='no-permission')
 def create_task(request):
     employees = Employee.objects.all()
     form = TaskModelForm()  #for get method
@@ -96,6 +103,8 @@ def create_task(request):
     }
     return render(request, "task_form.html", context)
 
+@login_required
+@permission_required('task.change_task', login_url='no-permission')
 def update_task(request, id):
     task = Task.objects.get(id=id)
     form = TaskModelForm(instance=task)
@@ -122,6 +131,8 @@ def update_task(request, id):
     }
     return render(request, "task_form.html", context)
 
+@login_required
+@permission_required('task.delete_task', login_url='no-permission')
 def delete_task(request, id):
     task = Task.objects.get(id=id)
     if request.method == 'POST':
@@ -132,6 +143,8 @@ def delete_task(request, id):
         messages.error(request, "Something went wrong, please try again.")
         return redirect('user-dashboard') 
 
+@login_required
+@permission_required('task.view_task', login_url='no-permission')
 def view_tasks(request):
     #retrieve all tasks from the database
     tasks = Task.objects.all()
