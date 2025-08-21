@@ -8,7 +8,7 @@ from debug_toolbar.toolbar import debug_toolbar_urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("contact/", contact),
-    path("home/", home),
+    path("", home, name='home'),
     path("task/", include("task.urls")),
     path("users/", include("users.urls")),
     path("no-permission/", no_permission, name='no-permission')

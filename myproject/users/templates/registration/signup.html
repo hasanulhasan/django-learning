@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign up</title>
-</head>
-<body>
-    <h1> Welcome to Sign Up page</h1>
-    <div>
+ {% extends "base.html" %}
+{% block content %}
+ <div class="container mx-auto px-6 py-12">
+        <h1> Welcome to Sign Up page</h1>
         <div> 
             {% if form.non_field_errors %}
                 {% for error in form.non_field_errors %}
@@ -32,5 +26,4 @@
             <button type='submit'>Sign Up</button>
         </form>
     </div>
-</body>
-</html>
+{% endblock content %}
