@@ -14,7 +14,7 @@ def is_manager(user):
 def dashboard(request):
     return render(request, "dashboard.html")
 
-@user_passes_test(is_manager, login_url='no-permission')
+# @user_passes_test(is_manager, login_url='no-permission')
 def manager_dashboard(request):
     return render(request, "manager-dashboard.html")
 
@@ -191,3 +191,7 @@ def tasks_with_filter(request):
         "high_priority_tasks": high_priority_tasks,
         "not_low_priority_tasks": not_low_priority_tasks
         })
+
+def task_details(request, task_id):
+    task = Task.objects.get(id=task_id)
+    return render(request, "task_details.html", {'task': task})
