@@ -1,5 +1,5 @@
 from django import forms
-from task.models import Task, Employee, TaskDetails
+from task.models import Task, TaskDetails
 #Django Form
 class TaskForm(forms.Form):
     title = forms.CharField(max_length=250, label='Task Title')

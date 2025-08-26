@@ -58,7 +58,7 @@ def contact(request):
 @login_required
 @permission_required('task.add_task', login_url='no-permission')
 def create_task(request):
-    employees = Employee.objects.all()
+    # employees = Employee.objects.all()
     form = TaskModelForm()  #for get method
 
     # task_form = TaskModelForm()
@@ -181,7 +181,7 @@ def tasks_with_filter(request):
     projects_with_no_tasks = Project.objects.annotate(task_count=Count('task')).filter(task_count=0)
     #Show all employees working on a specific project
     project_id = 1  # Example project ID
-    employees_on_project = Employee.objects.filter(task__project__id=1).distinct()
+    # employees_on_project = Employee.objects.filter(task__project__id=1).distinct()
     #Show the tasks which are assigned to a specific employee
     specific_employee_tasks = Task.objects.filter(assigned_to__id=1)
     
