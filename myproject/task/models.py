@@ -37,6 +37,7 @@ class TaskDetails(models.Model):
              related_name='details',
         )
         # assigned_to = models.CharField(max_length=100)
+        asset = models.ImageField(upload_to='task_assets/', blank=True, null=True)
         priority = models.CharField(max_length=1, choices=PRIORITY_OPTIONS, default=LOW)
         notes = models.TextField(blank=True, null=True)
 

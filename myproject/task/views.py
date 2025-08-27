@@ -66,7 +66,7 @@ def create_task(request):
 
     if request.method == 'POST':
         form = TaskModelForm(request.POST)
-        task_details_form = TaskDetailsModelForm(request.POST)
+        task_details_form = TaskDetailsModelForm(request.POST, request.FILES)  # For file uploads
 
         if form.is_valid() and task_details_form.is_valid():
             """For Model Form"""
