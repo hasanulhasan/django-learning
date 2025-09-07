@@ -194,4 +194,12 @@ def tasks_with_filter(request):
 
 def task_details(request, task_id):
     task = Task.objects.get(id=task_id)
-    return render(request, "task_details.html", {'task': task})
+    status_choices = Task.STATUS_CHOICES
+
+    if request.method == 'POST':
+        selected_status = request.POST.get('task_status')
+        task.status = selected_status
+        task.save()
+        return redirect('task-details', task.id)
+            
+    return render(request, "task_details.html", {'task': task, 'status_choices': status_choices})
